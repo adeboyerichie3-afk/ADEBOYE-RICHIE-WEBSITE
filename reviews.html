@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reviews | ADEBOYE RICHIE</title>
+  <style>
+    body{font-family:Arial, Helvetica, sans-serif;background:#0B1426;color:#fff;margin:0;padding:20px}
+    .container{max-width:900px;margin:0 auto}
+    h1{color:#D4AF37}
+    .card{background:#0f1a33;padding:16px;border-radius:8px;margin-bottom:12px}
+    label{display:block;margin:8px 0 4px;color:#ddd}
+    input[type="text"], textarea, select{width:100%;padding:8px;border-radius:6px;border:1px solid #2a3b66;background:#0b1224;color:#fff}
+    button{background:#D4AF37;color:#0B1426;border:none;padding:10px 16px;border-radius:6px;font-weight:bold;cursor:pointer}
+    .star{color:#D4AF37;font-weight:bold;margin-right:4px}
+    .reviews-list .review{border-bottom:1px solid rgba(212,175,55,0.08);padding:12px 0}
+    .muted{color:#9aa7c8;font-size:13px}
+    .avg{font-size:18px;font-weight:bold;color:#D4AF37}
+    .item-heading{margin-top:20px;margin-bottom:8px;color:#cfc6a6}
+    a.link{color:#D4AF37;text-decoration:none;margin-left:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Reviews</h1>
+    <p class="muted">Leave a review for any gallery item. Reviews are public and persistent.</p>
+
+    <div id="itemInfo" class="card" style="display:none">
+      <div><strong>Reviewing item:</strong> <span id="currentItem"></span> <a id="clearItem" class="link" href="#" style="display:none">[Show all reviews]</a></div>
+    </div>
+
+    <div class="card">
+      <form id="reviewForm">
+        <label for="name">Name (optional)</label>
+        <input id="name" type="text" maxlength="100" placeholder="Your name (optional)">
+
+        <label for="rating">Rating</label>
+        <select id="rating" required>
+          <option value="">Choose rating</option>
+          <option value="5">5 — Excellent</option>
+          <option value="4">4 — Good</option>
+          <option value="3">3 — Okay</option>
+          <option value="2">2 — Poor</option>
+          <option value="1">1 — Bad</option>
+        </select>
+
+        <label for="comment">Comment</label>
+        <textarea id="comment" rows="4" maxlength="1000" placeholder="Write your comment..." required></textarea>
+
+        <input id="itemIdField" type="hidden" value="">
+        <div style="margin-top:10px">
+          <button type="submit">Submit Review</button>
+          <span id="submsg" class="muted" style="margin-left:10px"></span>
+        </div>
+      </form>
+    </div>
+
+    <div id="overallStats" class="card" style="display:none">
+      <div><span class="avg" id="avgRating">0</span> average rating</div>
+      <div class="muted" id="countReviews">0 reviews</div>
+    </div>
+
+    <div id="reviewsContainer"></div>
+  </div>
+
+  <!-- Firebase JS SDK (Firebase v8 compat for simplicity) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <script>
+    // --- Firebase config (provided) ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyAUa_ZSZlSx21ASLGnNDs-7wQNfAjN-zMo",
+      authDomain: "adeboye-market-place.firebaseapp.com",
+      projectId: "adeboye-market-place",
+      storageBucket: "adeboye-market-place.firebasestorage.app",
+      messagingSenderId: "341249698673",
+      appId: "1:341249698673:web:d58fd723bdf61b3265a4d0",
+      measurementId: "G-VW3NC35XL0"
+    };
+    // -------------------------------------------
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemParam = urlParams.get('item'); // e.g. "pop1.jpg"
+
+    const reviewForm = document.getElementById('reviewForm');
+    const nameInput = document.getElementById('name');
+    const ratingInput = document.getElementById('rating');
+    const commentInput = document.getElementById('comment');
+    const itemIdField = document.getElementById('itemIdField');
+    const submsg = document.getElementById('submsg');
+    const reviewsContainer = document.getElementById('reviewsContainer');
+    const itemInfo = document.getElementById('itemInfo');
+    const currentItem = document.getElementById('currentItem');
+    const clearItem = document.getElementById('clearItem');
+    const overallStats = document.getElementById('overallStats');
+    const avgRating = document.getElementById('avgRating');
+    const countReviews = document.getElementById('countReviews');
+
+    if (itemParam) {
+      itemIdField.value = itemParam;
+      itemInfo.style.display = 'block';
+      currentItem.textContent = itemParam;
+      clearItem.style.display = 'inline';
+      clearItem.addEventListener('click', function(e){ e.preventDefault(); window.location = 'reviews.html'; });
+    }
+
+    reviewForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submsg.textContent = '';
+      const name = nameInput.value.trim();
+      const rating = parseInt(ratingInput.value);
+      const comment = commentInput.value.trim();
+      const itemId = itemIdField.value || null;
+
+      if (!rating || rating < 1 || rating > 5) {
+        submsg.textContent = 'Please choose a rating 1–5';
+        return;
+      }
+      if (!comment) {
+        submsg.textContent = 'Please enter a comment.';
+        return;
+      }
+      submsg.textContent = 'Submitting...';
+
+      try {
+        await db.collection('reviews').add({
+          itemId: itemId,
+          name: name || null,
+          rating: rating,
+          comment: comment,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        submsg.textContent = 'Thank you — your review is live.';
+        reviewForm.reset();
+        loadReviews(itemId); // refresh list
+      } catch (err) {
+        console.error(err);
+        submsg.textContent = 'Error submitting. Try again later.';
+      }
+    });
+
+    async function loadReviews(itemId) {
+      reviewsContainer.innerHTML = '';
+      overallStats.style.display = 'none';
+
+      let query = db.collection('reviews').orderBy('createdAt','desc').limit(500);
+      if (itemId) query = db.collection('reviews').where('itemId','==', itemId).orderBy('createdAt','desc');
+
+      const snapshot = await query.get();
+      if (snapshot.empty) {
+        reviewsContainer.innerHTML = '<div class="card muted">No reviews yet.</div>';
+        return;
+      }
+
+      // Compute averages and render
+      const reviews = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        reviews.push(Object.assign({ id: doc.id }, data));
+      });
+
+      // show overall stats for the current query
+      const total = reviews.length;
+      const sum = reviews.reduce((s,r)=> s + (r.rating||0), 0);
+      avgRating.textContent = (sum / total).toFixed(1);
+      countReviews.textContent = total + (total === 1 ? ' review' : ' reviews');
+      overallStats.style.display = 'block';
+
+      let html = '<div class="card reviews-list">';
+      for (const r of reviews) {
+        const date = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleString() : '';
+        const name = r.name ? r.name : 'Anonymous';
+        const itemLabel = r.itemId ? `<div class="muted">Item: ${r.itemId}</div>` : '';
+        html += `<div class="review"><div><strong>${escapeHtml(name)}</strong> <span class="muted">• ${date}</span></div>
+                 ${itemLabel}
+                 <div><span class="star">${'★'.repeat(r.rating||0)}</span></div>
+                 <div style="margin-top:6px">${escapeHtml(r.comment)}</div></div>`;
+      }
+      html += '</div>';
+      reviewsContainer.innerHTML = html;
+    }
+
+    function escapeHtml(str){
+      if(!str) return '';
+      return String(str).replace(/[&<>\

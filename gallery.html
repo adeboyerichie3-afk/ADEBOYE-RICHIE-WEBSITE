@@ -40,7 +40,7 @@
   .footer { background:#000; padding:30px 20px; text-align:center; color:#AAAAAA; font-size:14px; }
   
   /* WHATSAPP */
-  .wa { position:fixed; bottom:25px; right:25px; background:#25D366; color:#FFFFFF; width:60px; height:60px; border-radius:50%; text-align:center; line-height:60px; font-size:32px; box-shadow:0 4px 12px rgba(37,211,102,0.4); z-index:9999; transition:transform 0.2s; }
+  .wa { position:fixed; bottom:25px; right:25px; background:#25D366; color:#FFFFFF; width:60px; height:60px; border-radius:50%; text-align:center; line-height:60px; font-size:32px; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
   .wa:hover { transform:scale(1.1); }
   
   /* LIGHTBOX - FULLSCREEN POPUP */
@@ -48,6 +48,7 @@
   .lightbox img { max-width:90%; max-height:90%; border:4px solid #D4AF37; border-radius:12px; cursor:default; }
   .lightbox .close { position:absolute; top:20px; right:35px; color:#FFFFFF; font-size:40px; font-weight:bold; cursor:pointer; transition:color 0.2s; }
   .lightbox .close:hover { color:#D4AF37; }
+  .lightbox a#lightboxReviewLink { display:inline-block; }
 </style>
 </head>
 <body>
@@ -69,14 +70,13 @@
 <!-- PHOTO GRID -->
 <div class="gallery">
   <div class="grid">
-    <img src="pop1.jpg" loading="lazy" alt="Modern POP Ceiling Design 1 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
-    <img src="pop2.jpg" loading="lazy" alt="Luxury POP Ceiling Design 2 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
-    <img src="pop3.jpg" 
-  onclick="openLightbox(this.src)">
-    <img src="pop4.jpg" loading="lazy" alt="POP Ceiling Design 4 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
-    <img src="pop5.jpg" loading="lazy" alt="Featured POP Ceiling Project - ADEBOYE RICHIE" class="wide" onclick="openLightbox(this.src)">
-    <img src="pop6.jpg" loading="lazy" alt="POP Ceiling Design 6 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
-    <img src="pop7.jpg" loading="lazy" alt="POP Ceiling Design 7 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
+    <img src="pop1.jpg" data-item="pop1.jpg" loading="lazy" alt="Modern POP Ceiling Design 1 - ADEBOYE RICHIE" onclick="openLightbox(this)">
+    <img src="pop2.jpg" data-item="pop2.jpg" loading="lazy" alt="Luxury POP Ceiling Design 2 - ADEBOYE RICHIE" onclick="openLightbox(this)">
+    <img src="pop3.jpg" data-item="pop3.jpg" loading="lazy" alt="POP Ceiling Design 3 - ADEBOYE RICHIE" onclick="openLightbox(this)">
+    <img src="pop4.jpg" data-item="pop4.jpg" loading="lazy" alt="POP Ceiling Design 4 - ADEBOYE RICHIE" onclick="openLightbox(this)">
+    <img src="pop5.jpg" data-item="pop5.jpg" loading="lazy" alt="Featured POP Ceiling Project - ADEBOYE RICHIE" class="wide" onclick="openLightbox(this)">
+    <img src="pop6.jpg" data-item="pop6.jpg" loading="lazy" alt="POP Ceiling Design 6 - ADEBOYE RICHIE" onclick="openLightbox(this)">
+    <img src="pop7.jpg" data-item="pop7.jpg" loading="lazy" alt="POP Ceiling Design 7 - ADEBOYE RICHIE" onclick="openLightbox(this)">
   </div>
   
   <!-- CTA -->
@@ -97,12 +97,34 @@
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <span class="close">&times;</span>
   <img id="lightboxImg" src="" alt="">
+  <!-- review link is injected by JS -->
 </div>
 
 <script>
-function openLightbox(src) {
+function openLightbox(el) {
+  const src = (typeof el === 'string') ? el : el.src;
+  const itemId = el && el.dataset ? el.dataset.item : null;
   document.getElementById("lightbox").style.display = "flex";
   document.getElementById("lightboxImg").src = src;
+  // Add a small review link overlay
+  let link = document.getElementById('lightboxReviewLink');
+  if (!link) {
+    link = document.createElement('a');
+    link.id = 'lightboxReviewLink';
+    link.style.position = 'absolute';
+    link.style.bottom = '30px';
+    link.style.left = '30px';
+    link.style.background = '#D4AF37';
+    link.style.color = '#0B1426';
+    link.style.padding = '8px 12px';
+    link.style.borderRadius = '8px';
+    link.style.textDecoration = 'none';
+    link.style.fontWeight = 'bold';
+    link.target = '_blank';
+    document.getElementById('lightbox').appendChild(link);
+  }
+  link.href = 'reviews.html' + (itemId ? '?item=' + encodeURIComponent(itemId) : '');
+  link.textContent = 'Leave a review for this item';
 }
 function closeLightbox() {
   document.getElementById("lightbox").style.display = "none";
