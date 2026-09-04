@@ -176,10 +176,10 @@
         const date = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleString() : '';
         const name = r.name ? r.name : 'Anonymous';
         const itemLabel = r.itemId ? `<div class="muted">Item: ${r.itemId}</div>` : '';
-        html += `<div class="review"><div><strong>${escapeHtml(name)}</strong> <span class="muted">• ${date}</span></div>
-                 ${itemLabel}
-                 <div><span class="star">${'★'.repeat(r.rating||0)}</span></div>
-                 <div style="margin-top:6px">${escapeHtml(r.comment)}</div></div>`;
+        html += `<div class="review"><div><strong>${escapeHtml(name)}</strong> <span class="muted">• ${date}</span></div>` +
+                `${itemLabel}` +
+                `<div><span class="star">${'★'.repeat(r.rating||0)}</span></div>` +
+                `<div style="margin-top:6px">${escapeHtml(r.comment)}</div></div>`;
       }
       html += '</div>';
       reviewsContainer.innerHTML = html;
@@ -187,4 +187,13 @@
 
     function escapeHtml(str){
       if(!str) return '';
-      return String(str).replace(/[&<>\
+      return String(str).replace(/[&<>"'`]/g, function(s){
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'})[s];
+      });
+    }
+
+    // initial load
+    loadReviews(itemParam);
+  </script>
+</body>
+</html>
