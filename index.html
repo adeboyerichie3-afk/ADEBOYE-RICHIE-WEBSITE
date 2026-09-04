@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADEBOYE RICHIE | Premium POP Ceiling & Screeding Lagos Nigeria</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Adeboye Richie">
+<meta name="theme-color" content="#D4AF37">
 <meta name="description" content="Premium POP ceiling and house screeding in Lagos. Luxury designs, smooth finishing, affordable prices from ₦5,000/sqm. Call 0916 775 3540">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23D4AF37' width='192' height='192'/><text x='96' y='110' font-size='90' font-weight='bold' fill='%230B1426' text-anchor='middle' font-family='Arial'>AR</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23D4AF37' width='180' height='180' rx='40'/><text x='90' y='105' font-size='80' font-weight='bold' fill='%230B1426' text-anchor='middle' font-family='Arial'>AR</text></svg>">
+<title>ADEBOYE RICHIE | Premium POP Ceiling & Screeding Lagos Nigeria</title>
 <style>
-  body { margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; background:#0B1426; color:#FFFFFF; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:Arial, Helvetica, sans-serif; background:#0B1426; color:#FFFFFF; overflow-x:hidden; }
   a { text-decoration:none; }
+  
+  /* INSTALL BANNER */
+  .install-banner { background:#D4AF37; color:#0B1426; padding:15px; text-align:center; display:none; position:fixed; top:0; width:100%; z-index:1001; }
+  .install-banner.show { display:block; }
+  .install-banner button { background:#0B1426; color:#D4AF37; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-weight:bold; margin-left:10px; }
+  .close-banner { position:absolute; right:15px; top:50%; transform:translateY(-50%); background:none; border:none; color:#0B1426; font-size:20px; cursor:pointer; }
   
   /* NAV */
   .nav { background:#000; padding:15px; text-align:center; position:sticky; top:0; z-index:999; }
@@ -19,7 +33,7 @@
   .hero { background:linear-gradient(135deg, #0B1426 0%, #2E5CFF 100%); padding:60px 20px; text-align:center; }
   .hero h1 { color:#D4AF37; font-size:36px; margin:0 0 10px 0; }
   .hero p { font-size:18px; margin:0 0 20px 0; }
-  .btn { background:#D4AF37; color:#0B1426; padding:16px 32px; border-radius:50px; font-weight:bold; font-size:16px; display:inline-block; transition:transform 0.2s; }
+  .btn { background:#D4AF37; color:#0B1426; padding:16px 32px; border-radius:50px; font-weight:bold; font-size:16px; display:inline-block; transition:transform 0.2s; border:none; cursor:pointer; }
   .btn:hover { transform:scale(1.05); }
   .btn-blue { background:#2E5CFF; color:#FFFFFF; }
   
@@ -62,10 +76,19 @@
     .grid-2, .gallery-preview { grid-template-columns:1fr; }
     .hero h1 { font-size:28px; }
     .nav a { margin:0 5px; font-size:12px; }
+    .install-banner { font-size:14px; padding:12px; }
+    .install-banner button { padding:6px 15px; font-size:12px; margin-left:8px; }
   }
 </style>
 </head>
 <body>
+
+<!-- INSTALL BANNER -->
+<div id="installBanner" class="install-banner">
+  📱 Install our app for quick access to services! 
+  <button id="installBtn">Install App</button>
+  <button class="close-banner" onclick="document.getElementById('installBanner').classList.remove('show');">✕</button>
+</div>
 
 <!-- NAV -->
 <div class="nav">
@@ -200,6 +223,40 @@
 
 <!-- FLOATING WHATSAPP BUTTON -->
 <a href="https://wa.me/2349167753540" class="wa" target="_blank" title="Chat on WhatsApp">💬</a>
+
+<script>
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('✅ Service Worker registered'))
+      .catch(err => console.log('❌ Service Worker failed:', err));
+  }
+
+  // PWA Install Prompt
+  let deferredPrompt;
+  const installBanner = document.getElementById('installBanner');
+  const installBtn = document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBanner.classList.add('show');
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`App ${outcome === 'accepted' ? 'installed' : 'not installed'}`);
+      deferredPrompt = null;
+      installBanner.classList.remove('show');
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('✅ App installed successfully!');
+  });
+</script>
 
 </body>
 </html>
