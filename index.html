@@ -1,381 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ADEBOYE RICHIE PREMIUM - Book your POP, Screeding and Painting work with us">
-    <title>ADEBOYE RICHIE PREMIUM - Professional Finishing Services</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #ffffff;
-        }
-
-        /* Navigation Header */
-        header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #2c3e50;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #3498db;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 6rem 2rem;
-            text-align: center;
-            min-height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-        }
-
-        .hero-emoji {
-            font-size: 3rem;
-            margin: 1rem 0;
-        }
-
-        /* Services Section */
-        .services {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .services h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: #2c3e50;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .service-card {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #667eea;
-        }
-
-        .service-card p {
-            color: #555;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        .service-emoji {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background-color: #f8f9fa;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .cta-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-        }
-
-        .cta-section p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            color: #555;
-        }
-
-        /* Button Styles */
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background-color: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #764ba2;
-            transform: scale(1.05);
-        }
-
-        .btn-whatsapp {
-            background-color: #25d366;
-            color: white;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #20ba5f;
-            transform: scale(1.05);
-        }
-
-        /* Footer */
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
-
-        footer p {
-            margin: 0.5rem 0;
-        }
-
-        .footer-emoji {
-            font-size: 1.5rem;
-            margin: 0 0.5rem;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .services h2,
-            .cta-section h2 {
-                font-size: 2rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-                font-size: 0.9rem;
-            }
-
-            .button-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .logo {
-                font-size: 1.2rem;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
-            }
-
-            .hero {
-                padding: 3rem 1rem;
-                min-height: 400px;
-            }
-
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-
-            .hero-emoji {
-                font-size: 2rem;
-            }
-
-            .service-emoji {
-                font-size: 2rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADEBOYE RICHIE | Premium POP Ceiling & Screeding Lagos Nigeria</title>
+<meta name="description" content="Premium POP ceiling and house screeding in Lagos. Luxury designs, smooth finishing, affordable prices from ₦5,000/sqm. Call 0916 775 3540">
+<style>
+  body { margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; background:#0B1426; color:#FFFFFF; }
+  a { text-decoration:none; }
+  
+  /* NAV */
+  .nav { background:#000; padding:15px; text-align:center; position:sticky; top:0; z-index:999; }
+  .nav a { color:#FFFFFF; margin:0 10px; font-weight:bold; font-size:14px; }
+  .nav a.active { color:#D4AF37; }
+  .nav a:hover { color:#D4AF37; }
+  
+  /* HERO */
+  .hero { background:linear-gradient(135deg, #0B1426 0%, #2E5CFF 100%); padding:60px 20px; text-align:center; }
+  .hero h1 { color:#D4AF37; font-size:36px; margin:0 0 10px 0; }
+  .hero p { font-size:18px; margin:0 0 20px 0; }
+  .btn { background:#D4AF37; color:#0B1426; padding:16px 32px; border-radius:50px; font-weight:bold; font-size:16px; display:inline-block; transition:transform 0.2s; }
+  .btn:hover { transform:scale(1.05); }
+  .btn-blue { background:#2E5CFF; color:#FFFFFF; }
+  
+  /* SECTIONS */
+  .section { padding:60px 20px; max-width:1100px; margin:0 auto; }
+  .section h2 { color:#D4AF37; font-size:28px; text-align:center; margin-bottom:15px; }
+  .section p.sub { text-align:center; color:#CCCCCC; margin-bottom:40px; }
+  
+  /* SERVICES GRID */
+  .grid-2 { display:grid; grid-template-columns:repeat(2, 1fr); gap:20px; }
+  .card { background:#1A2A4A; border:2px solid #2E5CFF; border-radius:12px; padding:25px; }
+  .card h3 { color:#D4AF37; margin-top:0; }
+  .card p { color:#CCCCCC; line-height:1.7; }
+  
+  /* PRICING */
+  .price-card { background:#1A2A4A; border:2px solid #D4AF37; border-radius:12px; padding:25px; text-align:center; }
+  .price-card.premium { border-color:#2E5CFF; }
+  .price { color:#D4AF37; font-size:28px; font-weight:bold; }
+  .price span { font-size:14px; }
+  .features { text-align:left; color:#CCCCCC; font-size:14px; margin:15px 0; }
+  
+  /* TESTIMONIALS */
+  .testimonial { background:#0B1426; border-left:4px solid #D4AF37; border-radius:8px; padding:20px; margin-bottom:20px; }
+  .stars { color:#D4AF37; font-size:18px; }
+  .testimonial p { font-style:italic; }
+  .client { color:#2E5CFF; font-weight:bold; }
+  
+  /* GALLERY PREVIEW */
+  .gallery-preview { display:grid; grid-template-columns:repeat(2, 1fr); gap:15px; }
+  .gallery-preview img { width:100%; border-radius:10px; border:2px solid #D4AF37; }
+  
+  /* FOOTER */
+  .footer { background:#000; padding:30px 20px; text-align:center; color:#AAAAAA; font-size:14px; }
+  
+  /* WHATSAPP */
+  .wa { position:fixed; bottom:25px; right:25px; background:#25D366; color:#FFFFFF; width:60px; height:60px; border-radius:50%; text-align:center; line-height:60px; font-size:32px; box-shadow:0 4px 12px rgba(0,0,0,0.3); transition:transform 0.2s; z-index:1000; }
+  .wa:hover { transform:scale(1.1); }
+  
+  @media (max-width: 768px) {
+    .grid-2, .gallery-preview { grid-template-columns:1fr; }
+    .hero h1 { font-size:28px; }
+    .nav a { margin:0 5px; font-size:12px; }
+  }
+</style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <header>
-        <nav>
-            <div class="logo">ADEBOYE RICHIE PREMIUM</div>
-            <ul class="nav-links">
-                <li><a href="#services">Services</a></li>
-                <li><a href="#book">Book Now</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>ADEBOYE RICHIE PREMIUM</h1>
-            <div class="hero-emoji">🎉</div>
-            <p>Professional POP, Screeding & Painting Services</p>
-            <p style="font-size: 1.1rem; opacity: 0.9;">Transform Your Space with Expert Craftsmanship</p>
-        </div>
-    </section>
+<!-- NAV -->
+<div class="nav">
+  <a href="#home" class="active">HOME</a>
+  <a href="#services">SERVICES</a>
+  <a href="#gallery">GALLERY</a>
+  <a href="#contact">CONTACT</a>
+</div>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <h2>Book Your Project With Us</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-emoji">🪵</div>
-                <h3>POP Services</h3>
-                <p>Professional Plaster of Paris (POP) work for beautiful ceiling and wall finishes. Expert installation and finishing for a smooth, elegant look.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-emoji">🧱</div>
-                <h3>Screeding</h3>
-                <p>High-quality floor screeding services for level, durable surfaces. Perfect for preparation before tiling or other flooring finishes.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-emoji">🎨</div>
-                <h3>Painting Work</h3>
-                <p>Professional painting services with premium quality paints. Interior and exterior painting that brings your vision to life with precision.</p>
-            </div>
-        </div>
-    </section>
+<!-- HERO -->
+<div class="hero" id="home">
+  <h1>ADEBOYE RICHIE PREMIUM</h1>
+  <p>Premium POP Ceiling & House Screeding</p>
+  <a href="https://wa.me/2349167753540" class="btn" target="_blank">Chat on WhatsApp</a>
+</div>
 
-    <!-- CTA Section -->
-    <section class="cta-section" id="book">
-        <div class="cta-content">
-            <h2>Ready to Transform Your Space?</h2>
-            <p>Get in touch with us today to discuss your project and receive a quote. We're here to make your vision a reality with professional craftsmanship and attention to detail.</p>
-            <div class="button-group">
-                <a href="mailto:contact@adeboyerichie.com" class="btn btn-primary">📧 Send Email</a>
-                <a href="https://wa.me/2347000000000" target="_blank" class="btn btn-whatsapp">💬 WhatsApp Us</a>
-            </div>
-        </div>
-    </section>
+<!-- SERVICES -->
+<div class="section" id="services">
+  <h2>OUR SERVICES</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h3>🪵 POP Ceiling Design</h3>
+      <p>Modern, luxury, and classic ceiling designs. 3D, tray, cove lighting. We transform your home with expert craftsmanship.</p>
+    </div>
+    <div class="card">
+      <h3>🧱 House Screeding</h3>
+      <p>Smooth, level, crack-free finishing for floors and walls. Ready for tiles, paint, or epoxy coating.</p>
+    </div>
+    <div class="card">
+      <h3>🎨 Professional Painting</h3>
+      <p>Interior and exterior painting with premium quality paints. Transform your space with precision and excellence.</p>
+    </div>
+    <div class="card">
+      <h3>✨ Premium Finishing</h3>
+      <p>Complete finishing solutions combining POP, screeding, and painting for a perfect result every time.</p>
+    </div>
+  </div>
+</div>
 
-    <!-- Contact Section -->
-    <section class="cta-section" id="contact">
-        <div class="cta-content">
-            <h2>Contact Information</h2>
-            <p>We're ready to help with your POP, Screeding, and Painting projects!</p>
-            <p style="font-size: 1.1rem; margin: 1rem 0;">
-                <span class="footer-emoji">📱</span> WhatsApp/Phone: Coming Soon<br>
-                <span class="footer-emoji">📧</span> Email: contact@adeboyerichie.com<br>
-                <span class="footer-emoji">📍</span> Location: Nigeria
-            </p>
-        </div>
-    </section>
+<!-- PRICING -->
+<div class="section" style="background:#1A2A4A;">
+  <h2>OUR PACKAGES & PRICES</h2>
+  <p class="sub">Transparent pricing. No hidden charges.</p>
+  <div class="grid-2">
+    <div class="price-card">
+      <h3 style="color:#D4AF37;">BASIC POP CEILING</h3>
+      <div class="price">₦9,500 <span>/sqm</span></div>
+      <div class="features">✓ Standard POP Design<br>✓ Smooth Screeding<br>✓ 1 Year Warranty<br>✓ Professional Finish</div>
+      <a href="https://wa.me/2349167753540" class="btn">Get Quote</a>
+    </div>
+    <div class="price-card premium">
+      <h3 style="color:#2E5CFF;">PREMIUM POP CEILING</h3>
+      <div class="price" style="color:#2E5CFF;">₦17,000 <span>/sqm</span></div>
+      <div class="features">✓ Luxury 3D Designs<br>✓ LED Light Setup<br>✓ Premium Materials<br>✓ 2 Years Warranty</div>
+      <a href="https://wa.me/2349167753540" class="btn btn-blue">Get Quote</a>
+    </div>
+    <div class="price-card">
+      <h3 style="color:#D4AF37;">HOUSE SCREEDING</h3>
+      <div class="price">₦5,000 <span>/sqm</span></div>
+      <div class="features">✓ Smooth Finish<br>✓ Crack-Free<br>✓ Fast Drying<br>✓ 1 Year Warranty</div>
+      <a href="https://wa.me/2349167753540" class="btn">Book Now</a>
+    </div>
+    <div class="price-card">
+      <h3 style="color:#D4AF37;">PAINTING SERVICES</h3>
+      <div class="price">₦3,500 <span>/sqm</span></div>
+      <div class="features">✓ Premium Paint Quality<br>✓ Interior & Exterior<br>✓ Fast Application<br>✓ 6 Months Warranty</div>
+      <a href="https://wa.me/2349167753540" class="btn">Get Quote</a>
+    </div>
+  </div>
+</div>
 
-    <!-- Footer -->
-    <footer>
-        <p><span class="footer-emoji">🪄</span><span class="footer-emoji">🥰</span></p>
-        <p>&copy; 2024 ADEBOYE RICHIE PREMIUM. All rights reserved.</p>
-        <p>Professional POP, Screeding & Painting Services</p>
-    </footer>
+<!-- TESTIMONIALS -->
+<div class="section">
+  <h2>WHAT OUR CLIENTS SAY</h2>
+  <p class="sub">Trusted by homeowners in Lagos</p>
+  <div class="testimonial">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <p>"Adeboye and his team did magic on my ceiling. Clean job, on time, and very professional. Highly recommended!"</p>
+    <div class="client">- Mr. Johnson, Lekki</div>
+  </div>
+  <div class="testimonial">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <p>"The screeding was so smooth. No cracks after 6 months. This is premium finishing. Worth every kobo."</p>
+    <div class="client">- Mrs. Amina, Ikeja</div>
+  </div>
+  <div class="testimonial">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <p>"Best painting job I've ever seen. The attention to detail is incredible. They even cleaned up after themselves!"</p>
+    <div class="client">- Chief Oladele, VI Lagos</div>
+  </div>
+</div>
+
+<!-- GALLERY PREVIEW -->
+<div class="section" style="background:#1A2A4A;" id="gallery">
+  <h2>RECENT PROJECTS</h2>
+  <div class="gallery-preview">
+    <img src="pop1.jpg" alt="POP Project 1" loading="lazy">
+    <img src="pop2.jpg" alt="POP Project 2" loading="lazy">
+    <img src="pop3.jpg" alt="POP Project 3" loading="lazy">
+    <img src="pop4.jpg" alt="POP Project 4" loading="lazy">
+  </div>
+  <div style="text-align:center; margin-top:30px;">
+    <a href="#contact" class="btn btn-blue">View More & Book Now</a>
+  </div>
+</div>
+
+<!-- CONTACT SECTION -->
+<div class="section" id="contact">
+  <h2>GET IN TOUCH</h2>
+  <p class="sub">Ready to transform your space? Contact us today!</p>
+  <div class="card" style="text-align:center; border-color:#D4AF37;">
+    <h3>📞 Contact Information</h3>
+    <p style="font-size:16px; margin:20px 0;">
+      <strong>WhatsApp/Phone:</strong> <a href="https://wa.me/2349167753540" style="color:#25D366; text-decoration:underline;">+234 916 775 3540</a><br><br>
+      <strong>Email:</strong> <a href="mailto:adeboyerichie3@gmail.com" style="color:#D4AF37; text-decoration:underline;">adeboyerichie3@gmail.com</a><br><br>
+      <strong>Location:</strong> Lagos, Nigeria<br><br>
+      <strong>Available:</strong> Monday - Saturday, 8:00 AM - 6:00 PM
+    </p>
+    <div style="margin-top:25px;">
+      <a href="https://wa.me/2349167753540" class="btn" target="_blank" style="background:#25D366;">💬 Chat on WhatsApp</a>
+      <a href="mailto:adeboyerichie3@gmail.com" class="btn" style="background:#D4AF37; margin-left:10px;">📧 Send Email</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>© 2026 ADEBOYE RICHIE PREMIUM | Premium POP, Screeding & Painting Services</p>
+  <p>✨ Premium Quality • Professional Service • On-Time Delivery ✨</p>
+  <p>Call/WhatsApp: <strong>+234 916 775 3540</strong> | Email: <strong>adeboyerichie3@gmail.com</strong></p>
+</div>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/2349167753540" class="wa" target="_blank" title="Chat on WhatsApp">💬</a>
+
 </body>
 </html>
