@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POP Ceiling & Screeding Gallery | ADEBOYE RICHIE WORLDWIDE 🌍</title>
+<meta name="description" content="View premium POP ceiling and screeding projects by ADEBOYE RICHIE in Lagos. Quality designs, neat finish. Call 0916 775 3540">
+<style>
+  body { margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; background:#0B1426; color:#FFFFFF; }
+  a { text-decoration:none; }
+  
+  /* NAV */
+  .nav { background:#000; padding:15px; text-align:center; position:sticky; top:0; z-index:999; }
+  .nav a { color:#FFFFFF; margin:0 10px; font-weight:bold; font-size:14px; }
+  .nav a.active { color:#D4AF37; }
+  .nav a:hover { color:#D4AF37; }
+  
+  /* HEADER */
+  .header { background:linear-gradient(135deg, #0B1426 0%, #2E5CFF 100%); padding:50px 20px; text-align:center; }
+  .header h1 { color:#D4AF37; font-size:32px; margin:0 0 10px 0; }
+  .header p { margin:0; font-size:16px; }
+  
+  /* GRID */
+  .gallery { padding:50px 20px; max-width:1200px; margin:0 auto; }
+  .grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:15px; }
+  .grid img { width:100%; border-radius:12px; border:2px solid #D4AF37; display:block; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s; }
+  .grid img:hover { transform:scale(1.03); box-shadow:0 0 20px rgba(212,175,55,0.3); }
+  .grid .wide { grid-column:span 2; }
+  
+  @media (max-width: 600px) {
+    .grid { grid-template-columns:1fr; }
+    .grid .wide { grid-column:span 1; }
+    .header h1 { font-size:26px; }
+  }
+  
+  /* CTA + FOOTER */
+  .cta { text-align:center; padding:40px 20px; }
+  .btn { background:#D4AF37; color:#0B1426; padding:16px 32px; border-radius:50px; font-weight:bold; font-size:16px; display:inline-block; transition:transform 0.2s; }
+  .btn:hover { transform:scale(1.05); }
+  .footer { background:#000; padding:30px 20px; text-align:center; color:#AAAAAA; font-size:14px; }
+  
+  /* WHATSAPP */
+  .wa { position:fixed; bottom:25px; right:25px; background:#25D366; color:#FFFFFF; width:60px; height:60px; border-radius:50%; text-align:center; line-height:60px; font-size:32px; box-shadow:0 4px 12px rgba(37,211,102,0.4); z-index:9999; transition:transform 0.2s; }
+  .wa:hover { transform:scale(1.1); }
+  
+  /* LIGHTBOX - FULLSCREEN POPUP */
+  .lightbox { display:none; position:fixed; z-index:10000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; cursor:pointer; }
+  .lightbox img { max-width:90%; max-height:90%; border:4px solid #D4AF37; border-radius:12px; cursor:default; }
+  .lightbox .close { position:absolute; top:20px; right:35px; color:#FFFFFF; font-size:40px; font-weight:bold; cursor:pointer; transition:color 0.2s; }
+  .lightbox .close:hover { color:#D4AF37; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="home.html">HOME</a>
+  <a href="about.html">ABOUT</a>
+  <a href="gallery.html" class="active">GALLERY</a>
+  <a href="contact.html">CONTACT</a>
+</div>
+
+<!-- GALLERY HEADER -->
+<div class="header">
+  <h1>OUR PROJECT GALLERY</h1>
+  <p>See our premium POP & Screeding work</p>
+</div>
+
+<!-- PHOTO GRID -->
+<div class="gallery">
+  <div class="grid">
+    <img src="pop1.jpg" loading="lazy" alt="Modern POP Ceiling Design 1 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
+    <img src="pop2.jpg" loading="lazy" alt="Luxury POP Ceiling Design 2 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
+    <img src="pop3.jpg" 
+  onclick="openLightbox(this.src)">
+    <img src="pop4.jpg" loading="lazy" alt="POP Ceiling Design 4 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
+    <img src="pop5.jpg" loading="lazy" alt="Featured POP Ceiling Project - ADEBOYE RICHIE" class="wide" onclick="openLightbox(this.src)">
+    <img src="pop6.jpg" loading="lazy" alt="POP Ceiling Design 6 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
+    <img src="pop7.jpg" loading="lazy" alt="POP Ceiling Design 7 - ADEBOYE RICHIE" onclick="openLightbox(this.src)">
+  </div>
+  
+  <!-- CTA -->
+  <div class="cta">
+    <a href="contact.html" class="btn">Get Your Own Design</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>© 2026 ADEBOYE RICHIE | Call/WhatsApp: 0916 775 3540 | Lagos, Nigeria</p>
+</div>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/2349167753540" class="wa" target="_blank">💬</a>
+
+<!-- LIGHTBOX POPUP -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <span class="close">&times;</span>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+function openLightbox(src) {
+  document.getElementById("lightbox").style.display = "flex";
+  document.getElementById("lightboxImg").src = src;
+}
+function closeLightbox() {
+  document.getElementById("lightbox").style.display = "none";
+}
+// Prevent closing when clicking the image
+document.getElementById("lightboxImg").onclick = function(event) {
+  event.stopPropagation();
+}
+// ESC key to close
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeLightbox();
+  }
+});
+</script>
+
+</body>
+</html>
