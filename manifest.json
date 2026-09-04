@@ -1,0 +1,49 @@
+{
+  "name": "ADEBOYE RICHIE PREMIUM",
+  "short_name": "Adeboye Richie",
+  "description": "Premium POP Ceiling, House Screeding & Painting Services in Lagos, Nigeria",
+  "start_url": "/ADEBOYE-RICHIE-WEBSITE/",
+  "scope": "/ADEBOYE-RICHIE-WEBSITE/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#D4AF37",
+  "background_color": "#0B1426",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23D4AF37' width='192' height='192'/><text x='96' y='110' font-size='90' font-weight='bold' fill='%230B1426' text-anchor='middle' font-family='Arial'>AR</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23D4AF37' width='512' height='512'/><text x='256' y='310' font-size='240' font-weight='bold' fill='%230B1426' text-anchor='middle' font-family='Arial'>AR</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%230B1426' width='540' height='720'/><rect fill='%23D4AF37' y='100' width='540' height='200'/><text x='270' y='180' font-size='48' font-weight='bold' fill='%230B1426' text-anchor='middle' font-family='Arial'>ADEBOYE RICHIE</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book on WhatsApp",
+      "short_name": "WhatsApp",
+      "description": "Chat with us on WhatsApp",
+      "url": "https://wa.me/2349167753540",
+      "icons": [{"src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%2325D366' width='192' height='192'/><text x='96' y='110' font-size='120' text-anchor='middle'>💬</text></svg>", "sizes": "192x192"}]
+    },
+    {
+      "name": "Contact by Email",
+      "short_name": "Email",
+      "description": "Send us an email",
+      "url": "mailto:adeboyerichie3@gmail.com",
+      "icons": [{"src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23D4AF37' width='192' height='192'/><text x='96' y='110' font-size='120' text-anchor='middle'>📧</text></svg>", "sizes": "192x192"}]
+    }
+  ]
+}
