@@ -62,8 +62,25 @@
   .client { color:#2E5CFF; font-weight:bold; }
   
   /* GALLERY PREVIEW */
-  .gallery-preview { display:grid; grid-template-columns:repeat(2, 1fr); gap:15px; }
-  .gallery-preview img { width:100%; border-radius:10px; border:2px solid #D4AF37; }
+  .gallery-preview { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; }
+  .gallery-item { position:relative; cursor:pointer; overflow:hidden; border-radius:10px; }
+  .gallery-item img { width:100%; height:250px; object-fit:cover; border:2px solid #D4AF37; transition:transform 0.3s ease; }
+  .gallery-item:hover img { transform:scale(1.05); }
+  .gallery-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s ease; }
+  .gallery-item:hover .gallery-overlay { opacity:1; }
+  .gallery-overlay-text { color:#D4AF37; font-weight:bold; font-size:24px; }
+  
+  /* LIGHTBOX MODAL */
+  .lightbox { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; align-items:center; justify-content:center; }
+  .lightbox.active { display:flex; }
+  .lightbox-content { position:relative; max-width:90%; max-height:90vh; }
+  .lightbox-img { max-width:100%; max-height:85vh; object-fit:contain; border-radius:10px; }
+  .lightbox-close { position:absolute; top:-40px; right:0; color:#D4AF37; font-size:40px; cursor:pointer; font-weight:bold; }
+  .lightbox-close:hover { color:#FFF; }
+  .lightbox-nav { position:absolute; top:50%; width:100%; display:flex; justify-content:space-between; }
+  .lightbox-nav button { background:#D4AF37; color:#0B1426; border:none; padding:15px 20px; font-size:20px; cursor:pointer; border-radius:5px; font-weight:bold; transition:background 0.2s; }
+  .lightbox-nav button:hover { background:#FFF; }
+  .lightbox-counter { position:absolute; bottom:-40px; left:50%; transform:translateX(-50%); color:#D4AF37; font-weight:bold; }
   
   /* FOOTER */
   .footer { background:#000; padding:30px 20px; text-align:center; color:#AAAAAA; font-size:14px; }
@@ -73,11 +90,20 @@
   .wa:hover { transform:scale(1.1); }
   
   @media (max-width: 768px) {
-    .grid-2, .gallery-preview { grid-template-columns:1fr; }
+    .grid-2 { grid-template-columns:1fr; }
+    .gallery-preview { grid-template-columns:repeat(2, 1fr); }
     .hero h1 { font-size:28px; }
     .nav a { margin:0 5px; font-size:12px; }
     .install-banner { font-size:14px; padding:12px; }
     .install-banner button { padding:6px 15px; font-size:12px; margin-left:8px; }
+    .gallery-item img { height:200px; }
+    .lightbox-close { top:-35px; }
+  }
+
+  @media (max-width: 480px) {
+    .gallery-preview { grid-template-columns:1fr; }
+    .gallery-item img { height:180px; }
+    .lightbox-nav button { padding:10px 15px; font-size:16px; }
   }
 </style>
 </head>
@@ -181,17 +207,12 @@
   </div>
 </div>
 
-<!-- GALLERY PREVIEW -->
+<!-- GALLERY SECTION -->
 <div class="section" style="background:#1A2A4A;" id="gallery">
   <h2>RECENT PROJECTS</h2>
-  <div class="gallery-preview">
-    <img src="pop1.jpg" alt="POP Project 1" loading="lazy">
-    <img src="pop2.jpg" alt="POP Project 2" loading="lazy">
-    <img src="pop3.jpg" alt="POP Project 3" loading="lazy">
-    <img src="pop4.jpg" alt="POP Project 4" loading="lazy">
-  </div>
-  <div style="text-align:center; margin-top:30px;">
-    <a href="#contact" class="btn btn-blue">View More & Book Now</a>
+  <p class="sub">Click on any image to view in fullscreen</p>
+  <div class="gallery-preview" id="galleryContainer">
+    <!-- Images will be dynamically added here -->
   </div>
 </div>
 
@@ -221,40 +242,149 @@
   <p>Call/WhatsApp: <strong>+234 916 775 3540</strong> | Email: <strong>adeboyerichie3@gmail.com</strong></p>
 </div>
 
+<!-- LIGHTBOX MODAL -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="Full Size Image">
+    <div class="lightbox-nav">
+      <button onclick="previousImage()">❮ Prev</button>
+      <button onclick="nextImage()">Next ❯</button>
+    </div>
+    <div class="lightbox-counter">
+      <span id="imageCounter"></span>
+    </div>
+  </div>
+</div>
+
 <!-- FLOATING WHATSAPP BUTTON -->
 <a href="https://wa.me/2349167753540" class="wa" target="_blank" title="Chat on WhatsApp">💬</a>
 
 <script>
-  // Register Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(reg => console.log('✅ Service Worker registered'))
-      .catch(err => console.log('❌ Service Worker failed:', err));
-  }
+  // List of all images in the repository
+  const images = [
+    'pop1.jpg',
+    'pop2.jpg',
+    'pop3.jpg',
+    'pop4.jpg',
+    'pop5.jpg',
+    'pop6.jpg',
+    'pop8.jpg'
+  ];
 
-  // PWA Install Prompt
-  let deferredPrompt;
-  const installBanner = document.getElementById('installBanner');
-  const installBtn = document.getElementById('installBtn');
+  let currentImageIndex = 0;
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBanner.classList.add('show');
+  // Load gallery on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    loadGallery();
+    
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('✅ Service Worker registered'))
+        .catch(err => console.log('❌ Service Worker failed:', err));
+    }
+
+    // PWA Install Prompt
+    let deferredPrompt;
+    const installBanner = document.getElementById('installBanner');
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBanner.classList.add('show');
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`App ${outcome === 'accepted' ? 'installed' : 'not installed'}`);
+        deferredPrompt = null;
+        installBanner.classList.remove('show');
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      console.log('✅ App installed successfully!');
+    });
   });
 
-  installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`App ${outcome === 'accepted' ? 'installed' : 'not installed'}`);
-      deferredPrompt = null;
-      installBanner.classList.remove('show');
+  // Load gallery images
+  function loadGallery() {
+    const gallery = document.getElementById('galleryContainer');
+    gallery.innerHTML = '';
+    
+    images.forEach((img, index) => {
+      const galleryItem = document.createElement('div');
+      galleryItem.className = 'gallery-item';
+      galleryItem.innerHTML = `
+        <img src="${img}" alt="Project ${index + 1}" loading="lazy">
+        <div class="gallery-overlay">
+          <div class="gallery-overlay-text">👁️ View</div>
+        </div>
+      `;
+      galleryItem.onclick = () => openLightbox(index);
+      gallery.appendChild(galleryItem);
+    });
+  }
+
+  // Open lightbox
+  function openLightbox(index) {
+    currentImageIndex = index;
+    const lightbox = document.getElementById('lightbox');
+    const img = document.getElementById('lightboxImg');
+    img.src = images[index];
+    updateImageCounter();
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Close lightbox
+  function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  // Next image
+  function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    const img = document.getElementById('lightboxImg');
+    img.src = images[currentImageIndex];
+    updateImageCounter();
+  }
+
+  // Previous image
+  function previousImage() {
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    const img = document.getElementById('lightboxImg');
+    img.src = images[currentImageIndex];
+    updateImageCounter();
+  }
+
+  // Update image counter
+  function updateImageCounter() {
+    const counter = document.getElementById('imageCounter');
+    counter.textContent = `${currentImageIndex + 1} / ${images.length}`;
+  }
+
+  // Keyboard navigation for lightbox
+  document.addEventListener('keydown', (e) => {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox.classList.contains('active')) {
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') previousImage();
+      if (e.key === 'Escape') closeLightbox();
     }
   });
 
-  window.addEventListener('appinstalled', () => {
-    console.log('✅ App installed successfully!');
+  // Close lightbox when clicking outside image
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target.id === 'lightbox') {
+      closeLightbox();
+    }
   });
 </script>
 
